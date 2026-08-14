@@ -1,0 +1,250 @@
+{
+    "plugin": {
+        "description": "Controls OBS Studio from the deck: streaming, recording, scenes, sources, filters and audio.",
+        "requirements": "OBS Studio with the obs-websocket server enabled, and a connection set up in the plugin's settings. Every action shows on the key when OBS cannot be reached. Every action also takes an optional \"connection_id\" setting, which picks one of several configured OBS connections; left out, the action uses the first one."
+    },
+    "actions": {
+        "ToggleStream": {
+            "description": "Starts the stream if it is off and stops it if it is running. The key shows whether OBS is streaming.",
+            "settings": {}
+        },
+        "ToggleRecord": {
+            "description": "Starts and stops recording. The key shows whether OBS is recording.",
+            "settings": {}
+        },
+        "RecPlayPause": {
+            "description": "Pauses a running recording and resumes it again. Pair it with ToggleRecord - it only works while a recording is running.",
+            "settings": {}
+        },
+        "ToggleReplayBuffer": {
+            "description": "Turns the replay buffer on and off. Pair it with SaveReplayBuffer, which needs the buffer to be running.",
+            "settings": {}
+        },
+        "SaveReplayBuffer": {
+            "description": "Saves the last seconds from the replay buffer to disk - the clip-that-moment key. Needs the replay buffer to be running.",
+            "settings": {}
+        },
+        "ToggleVirtualCamera": {
+            "description": "Starts and stops the virtual camera, so OBS shows up as a webcam in other programs.",
+            "settings": {}
+        },
+        "ToggleStudioMode": {
+            "description": "Turns studio mode on and off, which gives OBS its preview and program views.",
+            "settings": {}
+        },
+        "TriggerTransition": {
+            "description": "Triggers the current transition, which in studio mode pushes the preview to the program output.",
+            "settings": {}
+        },
+        "SwitchScene": {
+            "description": "Switches OBS to a scene. Put one on each key to have every scene one press away.",
+            "settings": {
+                "scene": {
+                    "type": "string",
+                    "required": true,
+                    "description": "Name of the scene, exactly as it is called in OBS.",
+                    "example": "Gameplay"
+                }
+            }
+        },
+        "SwitchSceneCollection": {
+            "description": "Loads a different scene collection.",
+            "settings": {
+                "scene_collection": {
+                    "type": "string",
+                    "required": true,
+                    "description": "Name of the scene collection, exactly as it is called in OBS.",
+                    "example": "Streaming"
+                }
+            }
+        },
+        "ToggleInputMute": {
+            "description": "Mutes and unmutes one audio input in OBS. The key shows whether it is currently muted.",
+            "settings": {
+                "input": {
+                    "type": "string",
+                    "required": true,
+                    "description": "Name of the audio input in OBS.",
+                    "example": "Mic/Aux"
+                }
+            }
+        },
+        "SetInputMute": {
+            "description": "Mutes or unmutes one audio input, always in the same direction. Use two keys - or two states of one key - when muting and unmuting should be separate; use ToggleInputMute for a single toggle key.",
+            "settings": {
+                "input": {
+                    "type": "string",
+                    "required": true,
+                    "description": "Name of the audio input in OBS.",
+                    "example": "Mic/Aux"
+                },
+                "set_mode": {
+                    "type": "string",
+                    "default": "ENABLED",
+                    "values": [
+                        "ENABLED",
+                        "DISABLED"
+                    ],
+                    "description": "\"ENABLED\" unmutes the input, \"DISABLED\" mutes it."
+                }
+            }
+        },
+        "InputDial": {
+            "description": "Controls the volume of an OBS audio input from a dial and shows it as a bar on the dial's display, optionally with a live level meter.",
+            "settings": {
+                "input": {
+                    "type": "string",
+                    "required": true,
+                    "description": "Name of the audio input in OBS.",
+                    "example": "Desktop Audio"
+                },
+                "live_meter": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Show the input's live level instead of just the set volume."
+                },
+                "bar_color": {
+                    "type": "array",
+                    "default": [
+                        66,
+                        133,
+                        244,
+                        255
+                    ],
+                    "description": "Color of the volume bar as [r, g, b, a], each from 0 to 255."
+                }
+            }
+        },
+        "ToggleSceneItemEnabled": {
+            "description": "Shows and hides one source inside a scene - the usual key for switching an overlay or a camera on and off. The key shows whether the source is visible.",
+            "settings": {
+                "scene": {
+                    "type": "string",
+                    "required": true,
+                    "description": "Name of the scene the source sits in.",
+                    "example": "Gameplay"
+                },
+                "item": {
+                    "type": "string",
+                    "required": true,
+                    "description": "Name of the source inside that scene.",
+                    "example": "Webcam"
+                }
+            }
+        },
+        "SetSceneItemEnabled": {
+            "description": "Shows or hides one source inside a scene, always in the same direction. Use two keys when showing and hiding should be separate; use ToggleSceneItemEnabled for a single toggle key.",
+            "settings": {
+                "scene": {
+                    "type": "string",
+                    "required": true,
+                    "description": "Name of the scene the source sits in.",
+                    "example": "Gameplay"
+                },
+                "item": {
+                    "type": "string",
+                    "required": true,
+                    "description": "Name of the source inside that scene.",
+                    "example": "Webcam"
+                },
+                "set_mode": {
+                    "type": "string",
+                    "default": "ENABLED",
+                    "values": [
+                        "ENABLED",
+                        "DISABLED"
+                    ],
+                    "description": "\"ENABLED\" shows the source, \"DISABLED\" hides it."
+                }
+            }
+        },
+        "ToggleSceneFilter": {
+            "description": "Turns a filter on a scene or source on and off. The key shows whether the filter is active.",
+            "settings": {
+                "scene": {
+                    "type": "string",
+                    "required": true,
+                    "description": "Name of the scene or source the filter belongs to.",
+                    "example": "Webcam"
+                },
+                "filter": {
+                    "type": "string",
+                    "required": true,
+                    "description": "Name of the filter.",
+                    "example": "Color Correction"
+                }
+            }
+        },
+        "SetSceneFilter": {
+            "description": "Turns a filter on or off, always in the same direction. Use ToggleSceneFilter for a single toggle key.",
+            "settings": {
+                "scene": {
+                    "type": "string",
+                    "required": true,
+                    "description": "Name of the scene or source the filter belongs to.",
+                    "example": "Webcam"
+                },
+                "filter": {
+                    "type": "string",
+                    "required": true,
+                    "description": "Name of the filter.",
+                    "example": "Color Correction"
+                },
+                "set_mode": {
+                    "type": "string",
+                    "default": "ENABLED",
+                    "values": [
+                        "ENABLED",
+                        "DISABLED"
+                    ],
+                    "description": "\"ENABLED\" switches the filter on, \"DISABLED\" switches it off."
+                }
+            }
+        },
+        "OBSStats": {
+            "description": "Shows up to three OBS statistics on one key - CPU load, output FPS and stream state. It updates itself and needs no press.",
+            "settings": {
+                "stats_count": {
+                    "type": "string",
+                    "default": "3",
+                    "values": [
+                        "1",
+                        "2",
+                        "3"
+                    ],
+                    "description": "How many of the three label rows to fill. Note it is written as text, not as a number."
+                },
+                "stat_1": {
+                    "type": "string",
+                    "default": "CPU",
+                    "values": [
+                        "CPU",
+                        "FPS",
+                        "Stream"
+                    ],
+                    "description": "What the first row shows."
+                },
+                "stat_2": {
+                    "type": "string",
+                    "default": "FPS",
+                    "values": [
+                        "CPU",
+                        "FPS",
+                        "Stream"
+                    ],
+                    "description": "What the second row shows. Only used with stats_count 2 or higher."
+                },
+                "stat_3": {
+                    "type": "string",
+                    "default": "Stream",
+                    "values": [
+                        "CPU",
+                        "FPS",
+                        "Stream"
+                    ],
+                    "description": "What the third row shows. Only used with stats_count 3."
+                }
+            }
+        }
+    }
+}
